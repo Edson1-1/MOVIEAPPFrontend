@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import bcrypt from 'bcryptjs';
+import CryptoJS from 'crypto-js';
 import Axios from 'axios';
 
 
@@ -11,7 +12,8 @@ export default class Register extends Component{
         this.state= {
             name: "",
             email: "",
-            password: ""
+            password: "",
+            error : ''
         }
         this.onChangeName = this.onChangeName.bind(this);
         this.onChangeEmail = this.onChangeEmail.bind(this);
@@ -37,40 +39,32 @@ export default class Register extends Component{
 
     onSubmit(e){
         e.preventDefault();
-
-        bcrypt.genSalt(10)
-            .then((salt) => {
-                bcrypt.hash(this.state.password, salt)
-                    .then((hash) => {
-                        const hashedPassword = hash;
+        this.setState({
+            error: ''
+        })
+            const {history} = this.props;
                         const userRegister = {
                             name: this.state.name,
                             email: this.state.email,
-                            password: hashedPassword
+                            password: this.state.password
                         }
                         console.log(userRegister);
                         Axios.post('http://localhost:5000/api/user/register', userRegister)
                             .then( res => {
-                                console.log(res.data);
+                                history.push("/login");
                             })
                             .catch( err => {
-                                console.log("error with register API : "+err);
+                                const errorMsg = err.response.data;
+                                console.log("error with register API : "+errorMsg);
+                                this.setState({
+                                    error: errorMsg
+                                })
                             })
                         this.setState({
                             name: "",
                             email: "",
                             password: ""
                         });
-                
-                    })
-                    .catch( err => {
-                        console.log("error with hashing password: "+err);
-                    })
-                    
-                })
-                .catch(err => {
-                    console.log("error with generating salt" + err);
-                })
     }
 
 
@@ -78,6 +72,7 @@ export default class Register extends Component{
 
     render() {
 
+        if(localStorage.getItem('auth-token') === '' || !localStorage.getItem('auth-token')){
         return(
 
             <div>
@@ -117,7 +112,18 @@ export default class Register extends Component{
                    required/>
                    </div>
                </form>
+               <div>
+                   {this.state.error}
+               </div>
             </div>
-        )
+        )}
+        else {
+            return (
+                <div>
+                    <h2>User already Logged in</h2>
+                    <h3>Cannot Register new User while logged in</h3>
+                </div>
+            )
+        }
     }
 }
