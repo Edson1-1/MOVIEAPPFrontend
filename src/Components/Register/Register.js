@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import bcrypt from 'bcryptjs';
-import CryptoJS from 'crypto-js';
 import Axios from 'axios';
 
 

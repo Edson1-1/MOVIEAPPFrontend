@@ -1,9 +1,6 @@
 import React , {Component} from 'react';
 import Axios from 'axios';
 
-
-
-
 export default class Login extends Component{
     constructor(props){
         super(props)
