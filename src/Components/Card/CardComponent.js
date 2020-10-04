@@ -1,27 +1,33 @@
 import React from 'react';
-import {Card} from 'react-bootstrap';
+
+import './CardComponent.css'
 
 
 function CardComponent(props) {
   
-  const renderCard = (info, index) => {
+  const renderCard = (info) => {
     return(
-    <Card style={{ width: '18rem' }} key={index}>
-  <Card.Img variant="top" src={'http://localhost:5000/'+info.img.substring(8)} />
-  <Card.Body>
-    <Card.Title>{info.title}</Card.Title>
-    <Card.Text>
-      {info.description}
-    </Card.Text>
-  </Card.Body>
-</Card>)
+        <div className = "movie">
+          <img src={'http://localhost:5000/'+info.img.substring(8)}/>
+          <div className = "movie-info">
+            <h3>{info.title}</h3>
+          </div>
+          <div className = "movie-description">
+            <h2>Description</h2>
+            <p>{info.description}</p>
+          </div>
+        </div>   
+);
+
 }
   const cardInfo = props.info;
   return(
-    
-    <div>
+    <div className= "movie-container">
+      
       {cardInfo.map(renderCard)}
+    
     </div>
+   
   )
     
 }

@@ -1,5 +1,6 @@
 import React , {Component} from 'react';
 import Axios from 'axios';
+import './Login.css'
 
 export default class Login extends Component{
     constructor(props){
@@ -31,6 +32,7 @@ export default class Login extends Component{
             const token = data.data;
             localStorage.setItem('auth-token', token);
             history.push('/');
+            window.location.reload(false);
         }catch(err) {
             const error = err.response.data;
             console.log('error is: ', error);
@@ -60,37 +62,44 @@ export default class Login extends Component{
 
         if(!localStorage.getItem('auth-token')){
         return (
-            <div>
+            <div class="login-container">
                 
                 <form onSubmit={this.onSubmit}>
-                <h2>Login</h2>
-                <div>
+                <h1 className = "title-h1">Login</h1>
+                <div className = "form-group">
                     <label for = "Email">Email</label>
                     <input type = "email" 
+                    className = "form-control"
                     name = "Email" 
-                    placeholder = "email@example.com" 
+                    placeholder = "Email" 
                     value={this.state.email} 
                     onChange={this.onChangeEmail}
                     required/>
-                    </div>
-                    <div>
+                </div>
+                <div className = "form-group">
                     <label for = "Password">Password</label>
-                    <input type = "password" name="Password" 
-                    placeholder = "password"
+                    <input type = "password"
+                    className = "form-control" 
+                    name="Password" 
+                    placeholder = "Password"
                     value = {this.state.password}
                     onChange = {this.onChangePassword}
                     required/>
-                    </div>
-                    <input type = "submit" value="Login" onSubmit = {this.onSubmit}/>
+                </div>
+                <div className = "form-group">
+                    <input className = "btn btn-primary" type = "submit" value="Login" onSubmit = {this.onSubmit}/>
+                </div>
                 </form>
                 <div>
-                    <h2>{this.state.error} </h2>
+                    <h2 className = "error">{this.state.error} </h2>
                 </div>
             </div>
         )}
         else {
             return(
+                <div className=" login-container-after">
                 <h2>User already Logged in</h2>
+                </div>
             )
         }
         

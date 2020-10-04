@@ -32,8 +32,6 @@ export default class Main extends Component{
 
         }
 
-        
-
         Axios.get('http://localhost:5000/api/movie/')
             .then( data => {
                 // console.log(data.data);
@@ -44,7 +42,8 @@ export default class Main extends Component{
             .catch( err => {
                 console.log(err.response.data);
             })
-        }
+            
+    }
 
 
     onClick(e){
@@ -63,11 +62,14 @@ export default class Main extends Component{
             )
         }else if(this.state.user !== '') {
             return(
+            
                 <div>
-                    <h1>MOVIE APP</h1>
-                    <Card info = {this.state.info}/>
-                    
+                     <h2> MOVIE LIST</h2>
+                
+                    <Card info = {this.state.info} className = "grid"/>
                 </div>
+
+                
             )
         }
         else {

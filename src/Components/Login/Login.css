@@ -1,0 +1,20 @@
+.login-container{
+    padding: 2em;
+    width: 40%;
+    
+}
+
+.title-h1{
+    margin-bottom: 1em;
+}
+
+.error{
+    color: orange;
+    padding-top: 1em;
+}
+
+.login-container-after{
+    padding: 2em;
+    width: 100%;
+    
+}

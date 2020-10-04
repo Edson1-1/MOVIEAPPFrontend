@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Axios from 'axios';
+import './Register.css'
 
 
 export default class Register extends Component{
@@ -46,13 +47,12 @@ export default class Register extends Component{
                             email: this.state.email,
                             password: this.state.password
                         }
-                        console.log(userRegister);
                         Axios.post('http://localhost:5000/api/user/register', userRegister)
                             .then( res => {
                                 history.push("/login");
                             })
                             .catch( err => {
-                                const errorMsg = err.response.data;
+                                const errorMsg = err.response.data+". Please try again...";
                                 console.log("error with register API : "+errorMsg);
                                 this.setState({
                                     error: errorMsg
@@ -73,52 +73,56 @@ export default class Register extends Component{
         if(localStorage.getItem('auth-token') === '' || !localStorage.getItem('auth-token')){
         return(
 
-            <div>
+            <div className="register-container">
                <form onSubmit = {this.onSubmit}>
-                   <h1>Register</h1>
-                   <div>
+                   <h1 className = "title-h1">Register</h1>
+                   <div className = "form-group">
                    <label for = "Username">Username</label>
                    <input type="text"
+                   className = "form-control"
                    name = "Username"
                    placeholder = "Username"
                    value = {this.state.name}
                    onChange = {this.onChangeName}
                    required/>
                    </div>
-                   <div>
+                   <div class= "form-group">
                    <label for = "Email">Email</label>
                    <input type="email"
+                   className = "form-control"
                    name = "Email"
-                   placeholder = "email@example.com"
+                   placeholder = "Email"
                    value = {this.state.email}
                    onChange = {this.onChangeEmail}
                    required/>
                    </div>
-                   <div>
+                   <div className = "form-group">
                    <label for = "Password">Password</label>
                    <input type="password"
+                   className = "form-control"
                    name = "Password"
                    placeholder = "Password"
                    value = {this.state.password}
                    onChange = {this.onChangePassword}
                    required/>
                    </div>
-                   <div>
-                   <input type="submit"
+                   <div className="from-group">
+                   <input className = "btn btn-primary"
+                   type="submit"
                    value = "Register"
                    onChange = {this.onSubmit}
                    required/>
                    </div>
                </form>
-               <div>
+               <div className = "error">
                    {this.state.error}
                </div>
             </div>
         )}
         else {
             return (
-                <div>
-                    <h2>User already Logged in</h2>
+                <div className = " register-container-after">
+                    <h2>User already Logged in!</h2>
                     <h3>Cannot Register new User while logged in</h3>
                 </div>
             )
