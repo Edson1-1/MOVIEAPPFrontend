@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Axios from 'axios';
+import {Link} from 'react-router-dom';
 import './Register.css'
 
 
@@ -47,7 +48,7 @@ export default class Register extends Component{
                             email: this.state.email,
                             password: this.state.password
                         }
-                        Axios.post('http://localhost:5000/api/user/register', userRegister)
+                        Axios.post(process.env.REACT_APP_BASE_URL+'user/register', userRegister)
                             .then( res => {
                                 history.push("/login");
                             })
@@ -121,10 +122,10 @@ export default class Register extends Component{
         )}
         else {
             return (
-                <div className = " register-container-after">
-                    <h2>User already Logged in!</h2>
-                    <h3>Cannot Register new User while logged in</h3>
-                </div>
+                <div className="jumbotron jumbotron-margin">
+                <h1 className="display-4">User already Logged In. Cannot Register new account while logged in.</h1>
+                <Link to = '/' className = "btn btn-outline-dark">Go Back to Home Page</Link>
+            </div>
             )
         }
     }

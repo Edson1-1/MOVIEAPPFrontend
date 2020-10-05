@@ -25,22 +25,12 @@ function LogoutButton(){
     }
 }
 
+function NavbarLinks() {
 
-export default class Navbar extends Component{
-
-    constructor(props){
-        super(props);
-
-    }
-    
-
-    render(){
-
-        return(
-            
-            <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-                <Link to = '/' className="navbar-brand" > MOVIE APP</Link>
-                <div className = "navbar-collapse">
+    if(!localStorage.getItem('auth-token'))
+    {
+        return (
+            <div className = "navbar-collapse">
                     <ul className="navbar-nav mr-auto">
                         <li className="navbar-item">
                             <Link to ="/login" className="nav-link">Login</Link>
@@ -50,6 +40,35 @@ export default class Navbar extends Component{
                         </li>
                     </ul>
                 </div>
+        )
+    }
+    else {
+        return (
+            <div className = "navbar-collapse navLinks">
+                    <ul className="navbar-nav mr-auto">
+                        <li className="navbar-item">
+                            <Link to ="/addmovie" className="nav-link">Add Movie</Link>
+                        </li>
+                    </ul>
+                </div>
+        )
+
+    }
+
+    
+}
+
+
+export default class Navbar extends Component{
+
+    render(){
+
+        return(
+            
+            <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
+                <Link to = '/' className="navbar-brand" > MovieBase</Link>
+                <NavbarLinks/>
+                
                 <LogoutButton/>
                     
             </nav>

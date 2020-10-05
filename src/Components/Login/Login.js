@@ -1,4 +1,5 @@
 import React , {Component} from 'react';
+import {Link} from 'react-router-dom';
 import Axios from 'axios';
 import './Login.css'
 
@@ -28,7 +29,7 @@ export default class Login extends Component{
             password: this.state.password
         }
         try{
-            const data = await Axios.post('http://localhost:5000/api/user/login', userLogin);
+            const data = await Axios.post(process.env.REACT_APP_BASE_URL+'user/login', userLogin);
             const token = data.data;
             localStorage.setItem('auth-token', token);
             history.push('/');
@@ -91,14 +92,16 @@ export default class Login extends Component{
                 </div>
                 </form>
                 <div>
-                    <h2 className = "error">{this.state.error} </h2>
+                    <p className = "error">{this.state.error} </p>
                 </div>
             </div>
         )}
         else {
             return(
-                <div className=" login-container-after">
-                <h2>User already Logged in</h2>
+                
+                <div className="jumbotron jumbotron-margin">
+                    <h1 className="display-4">User already Logged In</h1>
+                    <Link to = '/' className = "btn btn-outline-dark">Go Back to Home Page</Link>
                 </div>
             )
         }

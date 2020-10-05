@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import Axios from 'axios';
 import jwt from 'jsonwebtoken';
-
+import {Link} from 'react-router-dom';
 import Card from '../Card/CardComponent';
 import './Main.css'
+import Jumpotron from '../Jumpotron/Jumpotron';
 
 export default class Main extends Component{
     constructor(props){
@@ -14,25 +15,30 @@ export default class Main extends Component{
             user : ""
 
         };
-
-        this.onClick = this.onClick.bind(this);
+        this.onClickLogout = this.onClickLogout.bind(this);
     }
 
     componentDidMount(){
         
         try{
         const token = localStorage.getItem('auth-token');
-        const user = jwt.verify(token, 'secretKey1234');
+        const user = jwt.verify(token, process.env.REACT_APP_SECRET);
         this.setState({
             user: user
         });
 
         }catch(err){
-            console.log("error is:"+err);
+            this.setState({
+                user: ''
+            })
 
         }
+        let config = {
+            headers: {
+              'auth-token': localStorage.getItem('auth-token'),
+            }}
 
-        Axios.get('http://localhost:5000/api/movie/')
+        Axios.get(process.env.REACT_APP_BASE_URL+"movie/", config)
             .then( data => {
                 // console.log(data.data);
                 this.setState({
@@ -45,20 +51,16 @@ export default class Main extends Component{
             
     }
 
-
-    onClick(e){
-        const {history} = this.props;
-        history.push('/login');
+    onClickLogout(e){
+        if(localStorage.getItem('auth-token')){
+        localStorage.removeItem('auth-token')}
+        window.location.reload(false);
     }
-
 
     render(){
         if(!localStorage.getItem('auth-token')){
-        return (
-            <div>
-                <h1> You are not Logged in</h1>
-                <button onClick = {this.onClick}>Login</button>
-                </div>
+            return ( 
+                <Jumpotron/>
             )
         }else if(this.state.user !== '') {
             return(
@@ -74,7 +76,12 @@ export default class Main extends Component{
         }
         else {
             return(
-                <h4> You are not authorized to access this page. Please login with valid id or Register a new account. </h4>
+                <div className="jumbotron jumbotron-margin">
+                <h1 className="display-4">Something went horribly wrong!</h1>
+                <p>Please Logout and try again</p>
+                    <Link to = '/' className = "btn btn-outline-warning" onClick = {this.onClickLogout}>Logout</Link>
+
+                </div>
             )
         }
         

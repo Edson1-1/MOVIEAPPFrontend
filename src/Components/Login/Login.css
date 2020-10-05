@@ -11,6 +11,7 @@
 .error{
     color: orange;
     padding-top: 1em;
+    font-size: 1em;
 }
 
 .login-container-after{
