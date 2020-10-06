@@ -15,7 +15,7 @@ function LogoutButton(){
     if(localStorage.getItem('auth-token')){
     return (
         <button className="btn btn-warning" onClick= {onClickLogout}>
-            <Link to ='/login' style={{textDecoration: 'none', color: 'black'}}>Logout</Link>
+            <Link to ='/' style={{textDecoration: 'none', color: 'black'}}>Logout</Link>
             </button>
     )}
     else{
