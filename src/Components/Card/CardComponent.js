@@ -10,7 +10,7 @@ function CardComponent(props) {
     return(
       
         <div className = "movie ">
-          <img src={process.env.REACT_APP_IMGSRC+info.img.substring(8)} alt={info.title}/>
+          <img src={process.env.REACT_APP_IMGSRC+info.img.substring(8) || process.env.REACT_APP_DEFAULT_IMAGE} alt={info.title}/>
           <div className = "movie-info">
             <h3>{info.title}</h3>
           </div>
