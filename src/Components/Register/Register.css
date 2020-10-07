@@ -1,6 +1,7 @@
 .register-container{
     padding: 2em;
-    width: 40%;
+    width: 35em;
+    max-width: 100%;
 }
 
 .title-h1{
@@ -11,7 +12,11 @@
     color: orange;
     padding-top: 1em;
 }
+.success{
+    color: green;
+    padding-top: 1em;
 
+}
 .register-container-after{
     padding: 2em;
     width: 100%;

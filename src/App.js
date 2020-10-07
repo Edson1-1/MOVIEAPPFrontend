@@ -11,16 +11,18 @@ import MoviePage from './Components/MoviePage/MoviePage';
 import UpdateMovie from './Components/UpdateMovie/UpdateMovie';
 import PageNotFound from './Components/PageNotFound/PageNotFound';
 
+import {LogContextProvider} from './Components/LogContextProvider';
+
 import './App.css';
 
 function App() {
   
   return (
-   
+   <LogContextProvider>
     <Router>
       <Navbar/>
       <Container fluid>
-    <div className="App">
+    <div>
       <Switch>
       <Route path = "/" exact component = {Main}/>
       <Route path = '/login' component = {Login}/> 
@@ -33,6 +35,7 @@ function App() {
     </div>
     </Container>
     </Router>
+    </LogContextProvider>
     
   );
 }

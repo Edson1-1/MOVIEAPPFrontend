@@ -1,6 +1,7 @@
 .login-container{
     padding: 2em;
-    width: 40%;
+    width: 35em;
+    max-width: 100%;
     
 }
 
@@ -18,4 +19,8 @@
     padding: 2em;
     width: 100%;
     
+}
+
+.regLink:hover {
+    text-decoration: none;
 }

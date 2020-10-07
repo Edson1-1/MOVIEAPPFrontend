@@ -72,13 +72,15 @@ export default class AddMovie extends Component{
         formdata.append('title', this.state.title);
         formdata.append('description', this.state.description);
         formdata.append('image', this.state.file);
-
+        const {history} = this.props;
         Axios.post(process.env.REACT_APP_BASE_URL+"movie/upload", formdata, config)
             .then( data => {
                 this.setState({
                     APImsg : data.data
                     });
-            })
+                    history.push('/')
+            }   
+            )
             .catch(err => {
                 // console.log(err);
                 // console.log(err.response.data);

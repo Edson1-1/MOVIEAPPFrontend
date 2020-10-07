@@ -3,9 +3,11 @@ import Axios from 'axios';
 import {Link} from 'react-router-dom';
 import './Register.css'
 
+import {LogContext} from '../LogContextProvider'
+
 
 export default class Register extends Component{
-
+    static contextType = LogContext;
     constructor(props){
         super(props)
 
@@ -13,11 +15,13 @@ export default class Register extends Component{
             name: "",
             email: "",
             password: "",
-            error : ''
+            error : '',
+            
         }
         this.onChangeName = this.onChangeName.bind(this);
         this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
+        
         this.onSubmit = this.onSubmit.bind(this);
      }
 
@@ -35,36 +39,56 @@ export default class Register extends Component{
         this.setState({
             password: e.target.value
         });
+    
     }
+
 
     onSubmit(e){
         e.preventDefault();
         this.setState({
             error: ''
-        })
+        });  
+            let errorMsg;
             const {history} = this.props;
                         const userRegister = {
                             name: this.state.name,
                             email: this.state.email,
                             password: this.state.password
                         }
+                       
                         Axios.post(process.env.REACT_APP_BASE_URL+'user/register', userRegister)
-                            .then( res => {
-                                history.push("/login");
+                            .then( data => {
+                                const token = data.data;
+                                localStorage.setItem('auth-token', token);
+                                this.setState({
+                                    name: "",
+                                    email: "",
+                                    password: ""
+                                });
+                                this.context.loggedIn();
+                                history.push("/");
+                                
                             })
                             .catch( err => {
-                                const errorMsg = err.response.data+". Please try again...";
+                                errorMsg = err.response.data+". Please try again...";
                                 console.log("error with register API : "+errorMsg);
                                 this.setState({
                                     error: errorMsg
-                                })
+                                });
+                                if(errorMsg === '"email" must be a valid email. Please try again...' || errorMsg === "Email already exists. Please try again..."){
+                                    this.setState({
+                                        email: ""
+                                    })
+                                }else if(errorMsg === '"password" length must be at least 6 characters long. Please try again...'){
+                                    this.setState({
+                                        password: ""
+                                    })
+                                }
                             })
-                        this.setState({
-                            name: "",
-                            email: "",
-                            password: ""
-                        });
-    }
+        }
+                            
+                        
+    
 
 
 
@@ -73,7 +97,8 @@ export default class Register extends Component{
 
         if(localStorage.getItem('auth-token') === '' || !localStorage.getItem('auth-token')){
         return(
-
+            <LogContext.Consumer>
+                    {(context) => ( <React.Fragment>
             <div className="register-container">
                <form onSubmit = {this.onSubmit}>
                    <h1 className = "title-h1">Register</h1>
@@ -98,15 +123,20 @@ export default class Register extends Component{
                    required/>
                    </div>
                    <div className = "form-group">
-                   <label for = "Password">Password</label>
+                   <label for = "CreatePassword">Create Password</label>
                    <input type="password"
                    className = "form-control"
-                   name = "Password"
-                   placeholder = "Password"
+                   name = "CreatePassword"
+                   placeholder = "Create Password"
                    value = {this.state.password}
                    onChange = {this.onChangePassword}
                    required/>
                    </div>
+
+                   <div className = "error">
+                   {this.state.confirmed}
+                    </div>
+                
                    <div className="from-group">
                    <input className = "btn btn-primary"
                    type="submit"
@@ -119,6 +149,9 @@ export default class Register extends Component{
                    {this.state.error}
                </div>
             </div>
+            </React.Fragment>
+                )}
+                </LogContext.Consumer>
         )}
         else {
             return (
