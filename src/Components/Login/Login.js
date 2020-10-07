@@ -50,12 +50,13 @@ export default class Login extends Component{
             console.log('error is: ', error);
             if(error === '"email" must be a valid email') {
                 this.setState({
-                    email: ""
+                    error: "Email must be a valid email"
                 })
-            }else if(error === '"password" length must be at least 6 characters long') { this.setState({ password : ""})}
-            this.setState({
-                error: error
-            });
+            }else if(error === '"password" length must be at least 6 characters long') { 
+                this.setState({ error : "Password must be atleast 6 characters long" })
+            }else if(error === 'Id or Password is wrong!'){
+                this.setState({ error : "Id or Password in incorrect" })
+            }
         }
         
     }
@@ -82,7 +83,7 @@ export default class Login extends Component{
                         <form onSubmit={this.onSubmit} >
                         <h1 className = "title-h1">Login</h1>
                         <div className = "form-group">
-                            <label for = "id">Email or Username</label>
+                            <label for = "id">Email or Username *</label>
                             <input type = "text" 
                             className = "form-control"
                             name = "id" 
@@ -92,7 +93,7 @@ export default class Login extends Component{
                             required/>
                         </div>
                         <div className = "form-group">
-                            <label for = "Password">Password</label>
+                            <label for = "Password">Password *</label>
                             <input type = "password"
                             className = "form-control" 
                             name="Password" 
@@ -105,11 +106,11 @@ export default class Login extends Component{
                             <input className = "btn btn-primary" type = "submit" value="Login" onSubmit = {this.onSubmit} />
                         </div>
                         </form>
+                        {/* <div>
+                        </div> */}
                         <div>
-                            <p className = "error">{this.state.error} </p>
-                        </div>
-                        <div>
-                            <Link className = "regLink" to = '/register'>Don't have an Account? Click Here</Link>
+                           <span className = "error-login">{this.state.error} </span>
+                           <p class="signup-link">Don't have an account?  <Link className = "regLink" to = '/register'> Sign up here!</Link></p>
                         </div>
                     </div>
                 </React.Fragment>

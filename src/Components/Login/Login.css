@@ -9,10 +9,14 @@
     margin-bottom: 1em;
 }
 
-.error{
-    color: orange;
-    padding-top: 1em;
+.error-login{
+    color:red;
     font-size: 1em;
+    margin: 0;
+}
+.signup-link {
+    font-size: 1em;
+    margin: 0;
 }
 
 .login-container-after{

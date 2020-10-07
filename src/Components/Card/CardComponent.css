@@ -79,3 +79,6 @@
     background-image: -webkit-linear-gradient(330deg, #f093fb 0%, #f5576c 100%);
     background-image: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(230,230,230,1) 0%, rgba(192,194,207,1) 100%); }
 
+.link-decoration:hover{
+    text-decoration: none;
+}

@@ -14,7 +14,8 @@ export default class MoviePage extends Component{
             title: "",
             description: "",
             img: "",
-            jumpo: false
+            jumpo: false,
+            showLoader: false
         
         }  
         
@@ -26,7 +27,9 @@ export default class MoviePage extends Component{
             headers: {
               'auth-token': localStorage.getItem('auth-token'),
             }}
-
+            this.setState({
+                showLoader: true
+            })
         Axios.get(process.env.REACT_APP_BASE_URL+"movie/"+this.props.match.params.id, config)
             .then( data => {
                 // console.log(data.data);
@@ -35,13 +38,15 @@ export default class MoviePage extends Component{
                     description: data.data.description,
                     img: process.env.REACT_APP_IMGSRC+data.data.img.substring(8),
                     update: "Update",
-                    delete: "Delete"
+                    delete: "Delete",
+                    showLoader: false
                 });
             })
             .catch(err => {
                 console.log(err.response.data);
                 this.setState({
-                    jumpo: true
+                    jumpo: true,
+                    showLoader: false
                 })
             })
 
@@ -68,29 +73,36 @@ export default class MoviePage extends Component{
 
 
     render(){
-
-        if(this.state.title !== ''){
-            return(
-                <div className="details"> 
-                    <div className = "media">
-                        <img class="align-self-center mr-3 image" src = {this.state.img} alt = {this.state.title}/>
-                        <div className = "media-body">
-                        <h3 className="mt-0">{this.state.title}</h3>
-                        <p className = "mb-0">{this.state.description}</p>
-                        <Link to ={"/movie/update/"+this.props.match.params.id}><button className = "btn btn-outline-primary" >Update</button></Link>
-                        <button className="btn btn-outline-danger" onClick = {this.onClickDelete}>Delete</button>  
-                        </div>      
-                    </div>   
+        if(this.state.showLoader===false){
+            if(this.state.title !== ''){
+                return(
+                    <div className="details"> 
+                        <div className = "media">
+                            <img class="align-self-center mr-3 image" src = {this.state.img} alt = {this.state.title}/>
+                            <div className = "media-body">
+                            <h3 className="mt-0">{this.state.title}</h3>
+                            <p className = "mb-0">{this.state.description}</p>
+                            <Link to ={"/movie/update/"+this.props.match.params.id}><button className = "btn btn-outline-primary" >Update</button></Link>
+                            <button className="btn btn-outline-danger" onClick = {this.onClickDelete}>Delete</button>  
+                            </div>      
+                        </div>   
+                    </div>
+                )
+            }
+            else if(this.state.jumpo === true) {
+                return(
+                <ErrorComponent/>
+                )
+            }
+            else {
+                return( <div></div>)
+            }
+        }else {
+            return( 
+                <div className = "loader">
+                    Loading...
                 </div>
             )
-        }
-        else if(this.state.jumpo === true) {
-            return(
-               <ErrorComponent/>
-            )
-        }
-        else {
-            return( <div></div>)
         }
     }
 }

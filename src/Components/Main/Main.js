@@ -33,7 +33,8 @@ export default class Main extends Component{
             info: [],
             user : "",
             log: 0,
-            view: -1
+            view: -1,
+            showLoader: false
 
         };
         this.onClickLogout = this.onClickLogout.bind(this);
@@ -62,15 +63,23 @@ export default class Main extends Component{
               'auth-token': localStorage.getItem('auth-token'),
             }}
 
+            this.setState({
+                showLoader: true
+            })
         Axios.get(process.env.REACT_APP_BASE_URL+"movie/", config)
             .then( data => {
                 // console.log(data.data.length);
                 this.setState({
                     info: data.data,
-                    view: data.data.length
+                    view: data.data.length,
+                    showLoader: false
                 });
             })
             .catch( err => {
+                this.setState({
+                    view : 0,
+                    showLoader: false
+                })
                 console.log(err.response.data);
             })
             
@@ -95,24 +104,32 @@ export default class Main extends Component{
                     <div></div>
                 )
         }else if(this.state.user !== '') {
-            if(this.state.view !== 0){
-             return(
-            
-                <div>
-                    <div className = "movie-List-addMovie">
-                     <h2> Movie List</h2>
-                         <Link className="btn btn-outline-success btn-sm" to = '/addmovie' role="button">Add Movie</Link>
-                     </div>
-                    <Card info = {this.state.info} className = "grid"/>
-                </div>
-
-                
-             )
-            }else if(this.state.view === 0){
+            if(this.state.showLoader === false){
+                if(this.state.view !== 0){
                 return(
-                    <NoData/>
+                
+                    <div>
+                        <div className = "movie-List-addMovie">
+                        <h2> Movie List</h2>
+                            <Link className="btn btn-outline-success btn-sm" to = '/addmovie' role="button">Add Movie</Link>
+                        </div>
+                        <Card info = {this.state.info} className = "grid"/>
+                    </div>
+
+                    
                 )
-            }else return(<div></div>)
+                }else if(this.state.view === 0){
+                    return(
+                        <NoData/>
+                    )
+                }else return(<div></div>)
+            }else {
+                return( 
+                    <div className = "loader">
+                        Loading...
+                    </div>
+                )
+            }
         }
         else {
             return(

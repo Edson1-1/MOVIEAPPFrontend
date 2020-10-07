@@ -70,18 +70,22 @@ export default class Register extends Component{
                                 
                             })
                             .catch( err => {
-                                errorMsg = err.response.data+". Please try again...";
+                                errorMsg = err.response.data+"";
                                 console.log("error with register API : "+errorMsg);
                                 this.setState({
                                     error: errorMsg
                                 });
-                                if(errorMsg === '"email" must be a valid email. Please try again...' || errorMsg === "Email already exists. Please try again..."){
+                                if(errorMsg === '"email" must be a valid email'){
                                     this.setState({
-                                        email: ""
+                                        error: "Email must be a valid email "
                                     })
-                                }else if(errorMsg === '"password" length must be at least 6 characters long. Please try again...'){
+                                }else if(errorMsg === '"password" length must be at least 6 characters long'){
                                     this.setState({
-                                        password: ""
+                                        error: "Password must be atleast 6 characters long"
+                                    })
+                                }else if (errorMsg === "Email already exists" || errorMsg === "Username already exists"){
+                                    this.setState({
+                                        error: errorMsg
                                     })
                                 }
                             })
@@ -103,7 +107,7 @@ export default class Register extends Component{
                <form onSubmit = {this.onSubmit}>
                    <h1 className = "title-h1">Register</h1>
                    <div className = "form-group">
-                   <label for = "Username">Username</label>
+                   <label for = "Username">Username *</label>
                    <input type="text"
                    className = "form-control"
                    name = "Username"
@@ -113,7 +117,7 @@ export default class Register extends Component{
                    required/>
                    </div>
                    <div class= "form-group">
-                   <label for = "Email">Email</label>
+                   <label for = "Email">Email *</label>
                    <input type="email"
                    className = "form-control"
                    name = "Email"
@@ -123,11 +127,11 @@ export default class Register extends Component{
                    required/>
                    </div>
                    <div className = "form-group">
-                   <label for = "CreatePassword">Create Password</label>
+                   <label for = "CreatePassword">Password *</label>
                    <input type="password"
                    className = "form-control"
                    name = "CreatePassword"
-                   placeholder = "Create Password"
+                   placeholder = "Password"
                    value = {this.state.password}
                    onChange = {this.onChangePassword}
                    required/>
@@ -145,7 +149,7 @@ export default class Register extends Component{
                    required/>
                    </div>
                </form>
-               <div className = "error">
+               <div className = "error-register">
                    {this.state.error}
                </div>
             </div>
