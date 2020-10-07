@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import {Link} from 'react-router-dom';
 import Card from '../Card/CardComponent';
 import './Main.css'
+import Loader from '../Loader/Loader';
 
 
 function NoData(){
@@ -19,7 +20,7 @@ function NoData(){
                     <h1 className="display-4">Hello, Welcome to MovieBase</h1>
                     <p className="lead">There are no movies in your account as of now.</p>
                     <hr className="my-4"/>
-                    <Link to = '/addmovie' className="btn btn-primary button-size"  role="button">Add Movie</Link>
+                    <Link to = '/movie/add' className="btn btn-primary button-size"  role="button">Add Movie</Link>
                 </div>
 
     )
@@ -111,7 +112,7 @@ export default class Main extends Component{
                     <div>
                         <div className = "movie-List-addMovie">
                         <h2> Movie List</h2>
-                            <Link className="btn btn-outline-success btn-sm" to = '/addmovie' role="button">Add Movie</Link>
+                            <Link className="btn btn-outline-success btn-sm" to = '/movie/add' role="button">Add Movie</Link>
                         </div>
                         <Card info = {this.state.info} className = "grid"/>
                     </div>
@@ -125,9 +126,7 @@ export default class Main extends Component{
                 }else return(<div></div>)
             }else {
                 return( 
-                    <div className = "loader">
-                        Loading...
-                    </div>
+                    <Loader/>
                 )
             }
         }

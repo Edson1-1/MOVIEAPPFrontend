@@ -18,7 +18,9 @@ export default class AddMovie extends Component{
             description: '',
             file: null,
             user: "",
-            APImsg: ""
+            APImsg: "",
+            actionTitle: "",
+            showLoader: false
         }
 
         this.onChangeTitle = this.onChangeTitle.bind(this);
@@ -41,6 +43,37 @@ export default class AddMovie extends Component{
                 })
     
             }
+        if(this.props.match.params.id){
+            this.setState({
+                actionTitle: "Update Movie"
+            })
+            let config = {
+                headers: {
+                    'auth-token': localStorage.getItem('auth-token'),}}
+             this.setState({ showLoader: true})       
+            Axios.get(process.env.REACT_APP_BASE_URL+"movie/"+this.props.match.params.id, config)
+                .then( data => {
+                    // console.log(data.data);
+                    this.setState({
+                        title: data.data.title,
+                        description: data.data.description,
+                        showLoader: false
+                    });
+                })
+                .catch(err => {
+                    console.log(err.response)
+                    this.setState({
+                        APImsg: err.response.data,
+                        showLoader: false
+                    });
+                })
+            
+
+        }else {
+            this.setState({
+                actionTitle : "Add Movie"
+            })
+        }
     }
 
     onChangeTitle(e){
@@ -73,27 +106,56 @@ export default class AddMovie extends Component{
         formdata.append('description', this.state.description);
         formdata.append('image', this.state.file);
         const {history} = this.props;
-        Axios.post(process.env.REACT_APP_BASE_URL+"movie/upload", formdata, config)
+        if(this.props.match.params.id){
+            Axios.put(process.env.REACT_APP_BASE_URL+"movie/update/"+this.props.match.params.id, formdata, config)
             .then( data => {
                 this.setState({
                     APImsg : data.data
                     });
-                    history.push('/')
-            }   
-            )
+                    this.setState({
+                        title: "",
+                        description: "",
+                        file: null
+        
+                    })
+
+                    this.props.history.push('/');
+            })
             .catch(err => {
                 // console.log(err);
-                // console.log(err.response.data);
+                console.log(err.response.data);
                  this.setState({
                     APImsg : err.response.data
                     });
             })
-            this.setState({
-                title: "",
-                description: "",
-                file: null
 
-            })
+        } else {
+            if(this.props.file !== null){
+                Axios.post(process.env.REACT_APP_BASE_URL+"movie/upload", formdata, config)
+                    .then( data => {
+                        this.setState({
+                            APImsg : data.data
+                            });
+                            this.setState({
+                                title: "",
+                                description: "",
+                                file: null
+                
+                            })
+                            history.push('/')
+                    }   
+                    )
+                    .catch(err => {
+                        console.log(err);
+                        console.log(err.response.data);
+                        this.setState({
+                            APImsg : err.response.data+". Please upload an image"
+                            });
+                    })}else {
+                        this.setState({ APImsg: "An Image is required"})
+                    }
+        }
+            
     }
     
 
@@ -108,7 +170,7 @@ export default class AddMovie extends Component{
 
             return(
                 <form onSubmit = {this.onSubmit} className = "CustomContainer">
-                    <h1>Add Movie</h1>
+                    <h1>{this.state.actionTitle}</h1>
                     <div className = "form-group">
                         <label for = "title">Title</label>
                         <input type="text"
@@ -136,7 +198,7 @@ export default class AddMovie extends Component{
                         <input type="file"
                     name = "Upload-image"
                     onChange = {this.onChangeFile}
-                    required/>
+                    />
                     </div>
                     <div className = "form-group">
                         <input type="submit"

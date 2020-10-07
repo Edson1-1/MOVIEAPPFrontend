@@ -8,7 +8,6 @@ import Navbar from './Components/Navbar/Navbar';
 import Main from './Components/Main/Main';
 import AddMovie from './Components/AddMovie/AddMovie';
 import MoviePage from './Components/MoviePage/MoviePage';
-import UpdateMovie from './Components/UpdateMovie/UpdateMovie';
 import PageNotFound from './Components/PageNotFound/PageNotFound';
 
 import {LogContextProvider} from './Components/LogContextProvider';
@@ -27,9 +26,9 @@ function App() {
       <Route path = "/" exact component = {Main}/>
       <Route path = '/login' component = {Login}/> 
       <Route path = '/register' component = {Register}/>
-      <Route path = '/addmovie' component = {AddMovie}/>
+      <Route path = '/movie/add' component = {AddMovie}/>
       <Route path = '/movie/:id' exact component = {MoviePage}/>
-      <Route path = '/movie/update/:id' component = {UpdateMovie}/>
+      <Route path = '/movie/update/:id' component = {AddMovie}/>
       <Route path = '*' component={PageNotFound}/>
       </Switch>
     </div>

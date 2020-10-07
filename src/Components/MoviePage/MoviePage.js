@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 
 import './MoviePage.css'
 import ErrorComponent from '../ErrorComponent/ErrorComponent';
+import Loader from '../Loader/Loader'
 
 export default class MoviePage extends Component{
 
@@ -99,9 +100,7 @@ export default class MoviePage extends Component{
             }
         }else {
             return( 
-                <div className = "loader">
-                    Loading...
-                </div>
+                <Loader/>
             )
         }
     }
