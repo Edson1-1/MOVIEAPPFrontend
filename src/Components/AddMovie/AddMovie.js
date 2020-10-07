@@ -4,6 +4,7 @@ import Axios from 'axios';
 
 import Jumpotron from '../Jumpotron/Jumpotron';
 import ErrorComponent from '../ErrorComponent/ErrorComponent';
+import Loader from '../Loader/Loader'
 
 import "./AddMovie.css"
 
@@ -172,50 +173,50 @@ export default class AddMovie extends Component{
                     </div>
                 )
             } else if(this.state.user !== ''){
-
-            return(
-                <form onSubmit = {this.onSubmit} className = "CustomContainer">
-                    <h1>{this.state.actionTitle}</h1>
-                    <div className = "form-group">
-                        <label for = "title">Title</label>
-                        <input type="text"
-                    className = "form-control"
-                    name = "title"
-                    placeholder = "Title"
-                    value = {this.state.title}
-                    onChange = {this.onChangeTitle}
-                    required/>
-                    </div>
-                    <div className = "form-group ">
-                        <label for = "description">Description</label>
-                        <textarea type="text"
-                    className = "form-control scrollbar-ripe-malinka "
-                    rows='10'
-                    name = "description"
-                    placeholder = "Description"
-                    value = {this.state.description}
-                    onChange = {this.onChangeDescription}
-                    required/>
-                    </div>
-                    <div className = "form-group">
-                        <label for = "Upload-image">Upload Image</label>
-                        <br/>
-                        <input type="file"
-                    name = "Upload-image"
-                    onChange = {this.onChangeFile}
-                    />
-                    </div>
-                    <div className = "form-group">
-                        <input type="submit"
-                        className = "btn btn-primary btn-lg"
-                    value="Submit"
-                    onSubmit = {this.onSubmit}
-                    required/>
-                    </div>
-                    <div> {this.state.APImsg}</div>
-                </form>
-            
-        )
+                    if(this.state.showLoader === false){
+                        return(
+                            <form onSubmit = {this.onSubmit} className = "CustomContainer">
+                                <h1>{this.state.actionTitle}</h1>
+                                <div className = "form-group">
+                                    <label for = "title">Title</label>
+                                    <input type="text"
+                                className = "form-control"
+                                name = "title"
+                                placeholder = "Title"
+                                value = {this.state.title}
+                                onChange = {this.onChangeTitle}
+                                required/>
+                                </div>
+                                <div className = "form-group ">
+                                    <label for = "description">Description</label>
+                                    <textarea type="text"
+                                className = "form-control scrollbar-ripe-malinka "
+                                rows='10'
+                                name = "description"
+                                placeholder = "Description"
+                                value = {this.state.description}
+                                onChange = {this.onChangeDescription}
+                                required/>
+                                </div>
+                                <div className = "form-group">
+                                    <label for = "Upload-image">Upload Image</label>
+                                    <br/>
+                                    <input type="file"
+                                name = "Upload-image"
+                                onChange = {this.onChangeFile}
+                                />
+                                </div>
+                                <div className = "form-group">
+                                    <input type="submit"
+                                    className = "btn btn-primary btn-lg"
+                                value="Submit"
+                                onSubmit = {this.onSubmit}
+                                required/>
+                                </div>
+                                <div> {this.state.APImsg}</div>
+                            </form>
+                        
+                    )}else { return(<Loader/>)}
         }else {
             return(
                 <ErrorComponent/>
