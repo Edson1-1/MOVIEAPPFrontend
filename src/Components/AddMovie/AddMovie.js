@@ -106,6 +106,7 @@ export default class AddMovie extends Component{
         formdata.append('description', this.state.description);
         formdata.append('image', this.state.file);
         const {history} = this.props;
+        this.setState({ showLoader: true}) 
         if(this.props.match.params.id){
             Axios.put(process.env.REACT_APP_BASE_URL+"movie/update/"+this.props.match.params.id, formdata, config)
             .then( data => {
@@ -115,7 +116,8 @@ export default class AddMovie extends Component{
                     this.setState({
                         title: "",
                         description: "",
-                        file: null
+                        file: null,
+                        showLoader: false
         
                     })
 
@@ -125,7 +127,8 @@ export default class AddMovie extends Component{
                 // console.log(err);
                 console.log(err.response.data);
                  this.setState({
-                    APImsg : err.response.data
+                    APImsg : err.response.data,
+                    showLoader: false
                     });
             })
 
@@ -139,7 +142,8 @@ export default class AddMovie extends Component{
                             this.setState({
                                 title: "",
                                 description: "",
-                                file: null
+                                file: null,
+                                showLoader: false
                 
                             })
                             history.push('/')
@@ -149,7 +153,8 @@ export default class AddMovie extends Component{
                         console.log(err);
                         console.log(err.response.data);
                         this.setState({
-                            APImsg : err.response.data+". Please upload an image"
+                            APImsg : err.response.data+". Please upload an image",
+                            showLoader: false
                             });
                     })}else {
                         this.setState({ APImsg: "An Image is required"})
